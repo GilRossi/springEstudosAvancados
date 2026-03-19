@@ -1,6 +1,17 @@
 HELP.md
 CLAUDE.md
 .claude/
+.env
+.env.*
+!.env.example
+*.local
+*.log
+logs/
+*.tmp
+*.temp
+*.swp
+*.swo
+.DS_Store
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -16,7 +27,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
