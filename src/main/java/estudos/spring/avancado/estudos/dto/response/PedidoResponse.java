@@ -1,9 +1,8 @@
-package estudos.spring.avancado.estudos.dto;
+package estudos.spring.avancado.estudos.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,18 +10,19 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoDTO {
-    @NotBlank(message = "O campo 'produto' é obrigatório")
+public class PedidoResponse {
+    private Long id;
     private String produto;
-
-    @Positive(message = "A quantidade deve ser um número positivo")
     private int quantidade;
-
-    @Positive(message = "O valor deve ser um número positivo")
     private BigDecimal valor;
+    private String status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataCriacao;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataAtualizacao;
 }

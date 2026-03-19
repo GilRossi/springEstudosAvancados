@@ -1,11 +1,9 @@
 package estudos.spring.avancado.estudos.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import estudos.spring.avancado.estudos.model.enums.StatusPedido;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,19 +13,41 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "pedidos")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pedido {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String produto;
     private int quantidade;
     private BigDecimal valor;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    @Builder.Default
+    private StatusPedido status = StatusPedido.PENDENTE;
+
+    @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 
-}
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
+    @PrePersist
+    protected void prePersist() {
+        if (dataCriacao == null) {
+            dataCriacao = LocalDateTime.now();
+        }
+        if (status == null) {
+            status = StatusPedido.PENDENTE;
+        }
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        dataAtualizacao = LocalDateTime.now();
+    }
+}
